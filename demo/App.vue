@@ -4,5 +4,6 @@
   <cron />
 </template>
 <script setup lang="ts">
-import cron from '../dist/index.umd.js'
+import cron from '../lib/index.js'
+import '../lib/style.css'
 </script>

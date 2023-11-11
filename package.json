@@ -11,9 +11,8 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-    "lib": "vite build",
-    "rollup": "rollup --config rollup.config.ts --configPlugin typescript",
-    "build:umdvue3": "rollup -c rollup.config.js --format es --name mList --file dist/index.umd.js"
+    "lib": "vite build --config vite.config.component.ts",
+    "vue3": "rollup -c rollup.config.js --format es --name mList --file lib/index.umd.js"
   },
   "dependencies": {
     "element-plus": "^2.4.2",
