@@ -2,7 +2,7 @@
   <h1>我引入了cron表达式</h1>
   <cron />
   <el-button type="primary" @click="showDialog">生成cron</el-button>
-  <cron-edit-view v-model="showCron" :expression="expression" @update="updateExpression" />
+  <cron-edit-view :value="showCron" :expression="expression" @update="updateExpression" @closeDialog="closeDialog" />
 </template>
 <script setup lang="ts">
 import cron from '../lib/index.js'
@@ -16,5 +16,8 @@ const showDialog = () => {
 const expression = ref('')
 const updateExpression = (value: string) => {
   expression.value = value
+}
+const closeDialog = () => {
+  showCron.value = false
 }
 </script>

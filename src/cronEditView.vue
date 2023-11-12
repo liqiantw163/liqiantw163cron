@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="定时任务编辑" width="70%" :value="value" :before-close="handleClose" :close-on-click-modal="false"
+  <el-dialog title="定时任务编辑" width="70%" :model-value="value" :before-close="handleClose" :close-on-click-modal="false"
     top="1vh">
     <CronEdit ref="cronEdit" :expression="expression" />
     <span slot="footer">
@@ -29,6 +29,8 @@ export default {
   },
   methods: {
     handleClose () {
+      this.closeAction()
+      return
       // 先检查是否修改
       const changed = !!(this.expression === this.$refs.cronEdit.form)
       if (changed) {
@@ -45,7 +47,8 @@ export default {
       }
     },
     closeAction () {
-      this.$emit('input', false)
+      console.log('关闭对话');
+      this.$emit('closeDialog', false)
     },
     resetCron () {
       this.$refs.cronEdit.reset(DEFAULTCRON)
