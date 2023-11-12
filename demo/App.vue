@@ -1,9 +1,20 @@
 <template>
   <h1>我引入了cron表达式</h1>
-  <el-button type="primary">创建cron表达式</el-button>
   <cron />
+  <el-button type="primary" @click="showDialog">生成cron</el-button>
+  <cron-edit-view v-model="showCron" :expression="expression" @update="updateExpression" />
 </template>
 <script setup lang="ts">
 import cron from '../lib/index.js'
 import '../lib/style.css'
+import CronEditView from '../src/cronEditView.vue'
+import { ref } from 'vue'
+const showCron = ref(false)
+const showDialog = () => {
+  showCron.value = true
+}
+const expression = ref('')
+const updateExpression = (value: string) => {
+  expression.value = value
+}
 </script>
