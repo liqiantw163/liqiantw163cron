@@ -246,6 +246,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .el-radio-group {
+  display: unset;
+
   label {
     margin: 10px 0;
   }
