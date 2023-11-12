@@ -1,16 +1,18 @@
 <template>
-  <el-dialog title="定时任务编辑" width="70%" :model-value="value" :before-close="handleClose" :close-on-click-modal="false"
-    top="1vh">
-    <CronEdit ref="cronEdit" :expression="expression" />
-    <span slot="footer">
-      <el-button type="primary" style="margin-right: 10px" @click="submit">保存</el-button>
-      <el-popconfirm title="您确认重置吗？" @confirm="resetCron" confirm-button-text="确认" cancel-button-text="取消">
-        <template #reference>
-          <el-button>重置</el-button>
-        </template>
-      </el-popconfirm>
-    </span>
-  </el-dialog>
+  <div>
+    <el-dialog title="定时任务" width="70%" :model-value="value" :before-close="handleClose" :close-on-click-modal="false"
+      top="1vh">
+      <CronEdit ref="cronEdit" :expression="expression" />
+      <template #footer>
+        <el-button type="primary" style="margin-right: 10px" @click="submit">保存</el-button>
+        <el-popconfirm title="您确认重置吗？" @confirm="resetCron" confirm-button-text="确认" cancel-button-text="取消">
+          <template #reference>
+            <el-button>重置</el-button>
+          </template>
+        </el-popconfirm>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 <script>
 import CronEdit from './cronEdit.vue'
@@ -66,19 +68,20 @@ export default {
 </script>
 <style lang="less" scoped>
 :deep(.el-dialog__header) {
-  border-bottom: 1px solid #ddd !important;
+  border-bottom: 1px solid #ddd;
+  margin-right: 0;
 }
 
-// :deep(.el-dialog__footer) {
-//   border-top: 1px solid #ddd;
-// }
+:deep(.el-dialog__footer) {
+  border-top: 1px solid #ddd;
+}
 
-// /deep/ .el-dialog__title {
-//   font-size: 14px;
-//   font-weight: 600;
-// }
+:deep(.el-dialog__title) {
+  font-size: 14px;
+  font-weight: 600;
+}
 
-// /deep/ .el-dialog__body {
-//   padding: 0 24px;
-// }
+:deep(.el-dialog__body) {
+  padding: 0 24px;
+}
 </style>
