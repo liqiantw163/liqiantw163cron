@@ -1,2 +1,2 @@
-import cron from './cron.vue'
-export default cron
+import CronEditView from './cronEditView.vue'
+export default CronEditView
