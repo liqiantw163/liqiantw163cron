@@ -1,6 +1,6 @@
 <template>
   <el-select v-model="value" :placeholder="multiple ? '可多选' : '请选择'" :style="{ width: `${multiple ? 196 : 95}px` }"
-    :clearable="true" :multiple="multiple" @change="handleChange" :collapse-tags="true">
+    :clearable="true" :multiple="multiple" @change="handleChange" collapse-tags collapse-tags-tooltip filterable>
     <template v-if="!isWeek()">
       <el-option v-for="item in options" :key="item" :label="item" :value="item">
       </el-option>
