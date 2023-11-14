@@ -1,9 +1,9 @@
 <template>
   <div class="popup-result">
     <p class="title">最近{{ len }}次运行时间</p>
-    <ul class="popup-result-scroll" v-show="isValid">
+    <ol class="popup-result-scroll" v-show="isValid">
       <li v-for="item in resultList" :key="item">{{ item }}</li>
-    </ul>
+    </ol>
   </div>
 </template>
  
@@ -603,7 +603,10 @@ export default {
 }
 
 .popup-result-scroll {
-  padding-left: 0;
-  list-style: none;
+  padding-left: 20px;
+
+  li {
+    margin: 4px 0;
+  }
 }
 </style>
