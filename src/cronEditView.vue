@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog title="定时任务" width="70%" :model-value="value" :before-close="handleClose" :close-on-click-modal="false"
-      top="1vh">
+      top="10vh">
       <CronEditAll ref="cronEdit" :expression="expression" />
       <template #footer>
         <el-button type="primary" style="margin-right: 10px" @click="submit">保存</el-button>
@@ -28,6 +28,15 @@ export default {
       type: Boolean,
       default: false
     },
+    len: {
+      type: Number,
+      default: 15
+    },
+  },
+  provide () {
+    return {
+      len: this.len
+    }
   },
   methods: {
     handleClose () {

@@ -1,34 +1,31 @@
 <template>
   <div class="popup-result">
-    <p class="title">最近5次运行时间</p>
-    <ul class="popup-result-scroll">
-      <template v-if="isShow">
-        <li v-for="item in resultList" :key="item">{{ item }}</li>
-      </template>
-      <li v-else>计算结果中...</li>
+    <p class="title">最近{{ len }}次运行时间</p>
+    <ul class="popup-result-scroll" v-show="isValid">
+      <li v-for="item in resultList" :key="item">{{ item }}</li>
     </ul>
   </div>
 </template>
  
 <script>
 export default {
+  name: "CronToTime",
+  inject: ['len'],
   data () {
     return {
       dayRule: "",
       dayRuleSup: "",
       dateArr: [],
       resultList: [],
-      isShow: false
+      isValid: true
     };
   },
-  name: "crontab-result",
   methods: {
     // 表达式值变化时，开始去计算结果
-    expressionChange () {
-      // 计算开始-隐藏结果
-      this.isShow = false;
+    expressionChange (cron) {
+      this.isValid = true;
       // 获取规则数组[0秒、1分、2时、3日、4月、5星期、6年]
-      let ruleArr = this.$props.ex.split(" ");
+      let ruleArr = cron.split(" ");
       // 用于记录进入循环的次数
       let nums = 0;
       // 用于暂时存符号时间规则结果的数组
@@ -344,7 +341,7 @@ export default {
                     nums++;
                   }
                   // 如果条数满了就退出循环
-                  if (nums == 5) break goYear;
+                  if (nums == this.len) break goYear;
                   // 如果到达最大值时
                   if (si == sDate.length - 1) {
                     resetSecond();
@@ -377,14 +374,7 @@ export default {
         this.resultList = ["没有达到条件的结果！"];
       } else {
         this.resultList = resultArr;
-        if (resultArr.length !== 5) {
-          this.resultList.push(
-            "最近100年内只有上面" + resultArr.length + "条结果！"
-          );
-        }
       }
-      // 计算完成-显示结果
-      this.isShow = true;
     },
     // 用于计算某位数字在数组中的索引
     getIndex (arr, value) {
@@ -605,13 +595,15 @@ export default {
       return value === format;
     }
   },
-  watch: {
-    ex: "expressionChange"
-  },
-  props: ["ex"],
-  mounted: function () {
-    // 初始化 获取一次结果
-    this.expressionChange();
-  }
 };
 </script>
+<style lang="less" scoped>
+.title {
+  font-weight: 600;
+}
+
+.popup-result-scroll {
+  padding-left: 0;
+  list-style: none;
+}
+</style>

@@ -1,10 +1,11 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="18">
-      <el-form :model="form" :rules="rules" ref="form">
+      <el-form :model="form" :rules="rules" ref="form" style="margin-top:10px;">
         <el-form-item label="Cron表达式" prop="expression">
           <el-input v-model="form.expression" :placeholder="`请输入Cron表达式,默认值为${DEFAULTCRON}`"
             @change="cronChange"></el-input>
+          <el-input v-show="false" placeholder="防止回车刷新"></el-input>
         </el-form-item>
       </el-form>
       <el-tabs v-model="activeName">
@@ -47,22 +48,20 @@
       </el-tabs>
     </el-col>
     <el-col :span="6">
-
-      <!-- <CronToTime :ex="form.expression" ref="cronTime" /> -->
-
+      <CronToTime ref="cronTime" />
     </el-col>
   </el-row>
 </template>
 <script>
 import CronToTime from "./cronToTime.vue";
-import { cronValidate } from "./checkCron.js";
+import { cronValidate } from "./checkCronMin.js";
 import CronItem from "./cronItem.vue";
 import { DEFAULTCRON } from "./cronEditView.vue"
 const urlPathValidator = (rule, value, callback) => {
   const res = cronValidate(value);
   const isStandard = res === true ? true : false;
   if (!isStandard) {
-    return callback(new Error("Cron 表达式格式错误"));
+    return callback("Cron 表达式格式错误");
   } else {
     callback();
   }
@@ -246,7 +245,6 @@ export default {
       handler: function (val) {
         const mid = [];
         for (let key in val) {
-          console.log('cronDetail改变了', key);
           mid.push(val[key]);
         }
         this.form.expression = mid.join(" ").trim();
@@ -261,8 +259,8 @@ export default {
     },
     cronChange (e, changeChild = true) {
       this.$refs.form.validateField("expression", (msg) => {
-        if (!msg) {
-          // this.$refs.cronTime.expressionChange(e);
+        if (msg) {
+          this.$refs.cronTime.expressionChange(e);
           const arr = e.split(" ");
           ["seconds", "minute", "hour", "day", "month", "week"].forEach(
             (item, index) => {
