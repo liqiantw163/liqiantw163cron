@@ -9,10 +9,10 @@
       <el-radio label="begin" v-if="settings.type !== 'week'">
         <span>{{ settings.begin.title[0] }}</span>
 
-        <CronChoose :val.sync="begin.start" :range="settings.range" key="begin1" />
+        <CronChoose v-model="begin.start" :range="settings.range" key="begin1" />
         <span>{{ settings.begin.title[1] }}</span>
 
-        <CronChoose :val.sync="begin.interval" :range="settings.begin.rangeEnd" key="begin2" />
+        <CronChoose v-model="begin.interval" :range="settings.begin.rangeEnd" key="begin2" />
         <span>{{ settings.begin.title[2] }}</span>
 
       </el-radio>
@@ -22,10 +22,10 @@
       <el-radio label="period">
         <span>{{ settings.period.title[0] }}</span>
 
-        <CronChoose :val.sync="period.start" :range="period.rangeStart" key="period1" />
+        <CronChoose v-model="period.start" :range="period.rangeStart" key="period1" />
         <span>{{ settings.period.title[1] }}</span>
 
-        <CronChoose :val.sync="period.end" :range="period.rangeEnd" key="period2" />
+        <CronChoose v-model="period.end" :range="period.rangeEnd" key="period2" />
         <span>{{ settings.period.title[2] }}</span>
 
       </el-radio>
@@ -35,7 +35,7 @@
       <el-radio label="appoint">
         <span>{{ settings.appoint.title[0] }}</span>
 
-        <CronChoose :val.sync="appoint" :range="settings.range" :multiple="true" key="appoint" />
+        <CronChoose v-model="appoint" :range="settings.range" :multiple="true" key="appoint" />
         <span>{{ settings.appoint.title[1] }}</span>
 
       </el-radio>
@@ -57,7 +57,7 @@
       <el-radio label="workDay" v-if="['day'].indexOf(settings.type) > -1">
         <span>{{ settings.workDay.title[0] }}</span>
 
-        <CronChoose :val.sync="workDay" :range="settings.range" key="workDay" />
+        <CronChoose v-model="workDay" :range="settings.range" key="workDay" />
         <span>{{ settings.workDay.title[1] }}</span>
 
       </el-radio>
@@ -67,7 +67,7 @@
       <el-radio label="lastWorkDay" v-if="['week'].indexOf(settings.type) > -1">
         <span>{{ settings.lastWorkDay.title[0] }}</span>
 
-        <CronChoose :val.sync="lastWorkDay" :range="settings.range" key="lastWorkDay" />
+        <CronChoose v-model="lastWorkDay" :range="settings.range" key="lastWorkDay" />
         <span>{{ settings.lastWorkDay.title[1] }}</span>
 
       </el-radio>
@@ -85,10 +85,6 @@ import CronChoose from "./cronItemChoose.vue";
 export default {
   name: "CronItem",
   props: {
-    cron: {
-      type: String,
-      required: true,
-    },
     settings: {
       type: Object,
       required: true,
@@ -232,7 +228,7 @@ export default {
           cron = "";
           break;
       }
-      this.$emit("update:cron", cron);
+      this.$emit("input", cron);
     },
     changeRadio (val) {
       const type = this.settings.type

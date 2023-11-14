@@ -2,7 +2,7 @@
   <div>
     <el-dialog title="定时任务" width="70%" :model-value="value" :before-close="handleClose" :close-on-click-modal="false"
       top="1vh">
-      <CronEdit ref="cronEdit" :expression="expression" />
+      <CronEditAll ref="cronEdit" :expression="expression" />
       <template #footer>
         <el-button type="primary" style="margin-right: 10px" @click="submit">保存</el-button>
         <el-popconfirm title="您确认重置吗？" @confirm="resetCron" confirm-button-text="确认" cancel-button-text="取消">
@@ -15,11 +15,11 @@
   </div>
 </template>
 <script>
-import CronEdit from './cronEdit.vue'
+import CronEditAll from './cronEdit.vue'
 export const DEFAULTCRON = '0 0 0/1 * * ?'
 export default {
   name: 'CronEditView',
-  components: { CronEdit },
+  components: { CronEditAll },
   props: {
     expression: {
       type: String,
@@ -49,7 +49,6 @@ export default {
       }
     },
     closeAction () {
-      console.log('关闭对话');
       this.$emit('closeDialog', false)
     },
     resetCron () {

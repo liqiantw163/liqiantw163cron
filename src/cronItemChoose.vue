@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="value" :placeholder="multiple ? '可多选' : '请选择'" :style="{ width: `${multiple ? 196 : 70}px` }"
+  <el-select v-model="value" :placeholder="multiple ? '可多选' : '请选择'" :style="{ width: `${multiple ? 196 : 95}px` }"
     :clearable="true" :multiple="multiple" @change="handleChange" :collapse-tags="true">
     <template v-if="!isWeek()">
       <el-option v-for="item in options" :key="item" :label="item" :value="item">
@@ -14,10 +14,6 @@
 export default {
   name: "CronChoose",
   props: {
-    val: {
-      type: [Number, String, Array],
-      required: true,
-    },
     multiple: {
       type: Boolean,
       default: false,
@@ -86,16 +82,16 @@ export default {
             return -1
           }
         })
-        this.$emit('update:val', res)
+        this.$emit('input', res)
       } else {
-        this.$emit('update:val', e)
+        this.$emit('input', e)
       }
     }
   },
 };
 </script>
 <style lang="less" scoped>
-/deep/ .el-input__inner {
-  padding: 0 20px 0 5px;
+:deep(.el-input__inner) {
+  padding: 0 0px 0 5px;
 }
 </style>

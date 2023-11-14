@@ -6,46 +6,45 @@
           <el-input v-model="form.expression" :placeholder="`请输入Cron表达式,默认值为${DEFAULTCRON}`"
             @change="cronChange"></el-input>
         </el-form-item>
-        <el-tabs v-model="activeName" @tab-click="tabClick">
-          <el-tab-pane label="秒" name="seconds">
-
-            <CronItem :cron.sync="cronDetail.seconds" ref="seconds" key="seconds" :settings="CRONSETTING.seconds" />
-
-          </el-tab-pane>
-          <el-tab-pane label="分钟" name="minute">
-
-            <CronItem :cron.sync="cronDetail.minute" ref="minute" key="minute" :settings="CRONSETTING.minute" />
-
-          </el-tab-pane>
-          <el-tab-pane label="时" name="hour">
-
-            <CronItem :cron.sync="cronDetail.hour" ref="hour" key="hour" :settings="CRONSETTING.hour" />
-
-          </el-tab-pane>
-          <el-tab-pane label="日" name="day">
-
-            <CronItem :cron.sync="cronDetail.day" ref="day" key="day" :settings="CRONSETTING.day"
-              @changeDayOrWeek="changeDayOrWeek" />
-
-          </el-tab-pane>
-          <el-tab-pane label="月" name="month">
-
-            <CronItem :cron.sync="cronDetail.month" ref="month" key="month" :settings="CRONSETTING.month" />
-
-          </el-tab-pane>
-          <el-tab-pane label="周" name="week">
-
-            <CronItem :cron.sync="cronDetail.week" ref="week" key="week" :settings="CRONSETTING.week"
-              @changeDayOrWeek="changeDayOrWeek" />
-
-          </el-tab-pane>
-          <el-tab-pane label="年" name="year">
-
-            <CronItem :cron.sync="cronDetail.year" ref="year" key="year" :settings="CRONSETTING.year" />
-
-          </el-tab-pane>
-        </el-tabs>
       </el-form>
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="秒" name="seconds">
+          <CronItem ref="seconds" key="seconds" :settings="CRONSETTING.seconds"
+            @input="(e) => updateCronDetail(e, 'seconds')" />
+        </el-tab-pane>
+        <el-tab-pane label="分钟" name="minute">
+          <CronItem @input="(e) => updateCronDetail(e, 'minute')" ref="minute" key="minute"
+            :settings="CRONSETTING.minute" />
+
+        </el-tab-pane>
+        <el-tab-pane label="时" name="hour">
+
+          <CronItem @input="(e) => updateCronDetail(e, 'hour')" ref="hour" key="hour" :settings="CRONSETTING.hour" />
+
+        </el-tab-pane>
+        <el-tab-pane label="日" name="day">
+
+          <CronItem @input="(e) => updateCronDetail(e, 'day')" ref="day" key="day" :settings="CRONSETTING.day"
+            @changeDayOrWeek="changeDayOrWeek" />
+
+        </el-tab-pane>
+        <el-tab-pane label="月" name="month">
+
+          <CronItem @input="(e) => updateCronDetail(e, 'month')" ref="month" key="month" :settings="CRONSETTING.month" />
+
+        </el-tab-pane>
+        <el-tab-pane label="周" name="week">
+
+          <CronItem @input="(e) => updateCronDetail(e, 'week')" ref="week" key="week" :settings="CRONSETTING.week"
+            @changeDayOrWeek="changeDayOrWeek" />
+
+        </el-tab-pane>
+        <el-tab-pane label="年" name="year">
+
+          <CronItem @input="(e) => updateCronDetail(e, 'year')" ref="year" key="year" :settings="CRONSETTING.year" />
+
+        </el-tab-pane>
+      </el-tabs>
     </el-col>
     <el-col :span="6">
 
@@ -205,16 +204,12 @@ export const CRONSETTING = {
   },
 };
 export default {
-  name: "CronEdit",
+  name: "CronEditAll",
   props: {
     expression: {
       type: String,
       required: true
-    },
-    activeTab: {
-      type: String,
-      default: 'seconds'
-    },
+    }
   },
   data () {
     return {
@@ -222,7 +217,7 @@ export default {
         expression: ""
       },
       spaceIdList: [],
-      activeName: "",
+      activeName: "seconds",
       rules: {
         expression: [
           { validator: urlPathValidator, trigger: "change" },
@@ -243,7 +238,6 @@ export default {
   },
   mounted () {
     this.form.expression = this.expression || DEFAULTCRON;
-    this.activeName = this.activeTab;
     this.reset(this.expression);
   },
   components: { CronToTime, CronItem },
@@ -252,6 +246,7 @@ export default {
       handler: function (val) {
         const mid = [];
         for (let key in val) {
+          console.log('cronDetail改变了', key);
           mid.push(val[key]);
         }
         this.form.expression = mid.join(" ").trim();
@@ -261,10 +256,13 @@ export default {
     }
   },
   methods: {
+    updateCronDetail (val, key) {
+      this.cronDetail[key] = val
+    },
     cronChange (e, changeChild = true) {
       this.$refs.form.validateField("expression", (msg) => {
         if (!msg) {
-          this.$refs.cronTime.expressionChange(e);
+          // this.$refs.cronTime.expressionChange(e);
           const arr = e.split(" ");
           ["seconds", "minute", "hour", "day", "month", "week"].forEach(
             (item, index) => {
@@ -295,7 +293,6 @@ export default {
       if (val) {
         this.form.expression = val;
       }
-      console.log('执行了', val);
       this.$nextTick(() => {
         this.cronChange(this.form.expression);
       });
@@ -325,9 +322,6 @@ export default {
           }
         });
       });
-    },
-    tabClick ({ name }) {
-      this.$emit("update:activeTab", name);
     },
   },
 };
